@@ -1,0 +1,18 @@
+extract all kar folder ko , uske baad MySQL ka code alag se bheja hai usko 
+MySQL workbench pe jaake paste karke run karde (queries padhke run karna
+kyuki last wali query me jo ek input hai vo delete ho raha hai , aage bhi jo tables banaye the vo drop kiye the isiliye shaanti se padhke ek ek query run karna . fir command prompt ko EmployeeAttendance wale folder me navigate karo uske baad
+compile code :javac -cp ".;lib/mysql-connector-j-9.5.0.jar" src/*.java -d bin
+run code : java -cp ".;bin;lib/mysql-connector-j-9.5.0.jar" Main
+
+login
+Email: john@company.com
+Password: password123
+
+yaha pe ek baar checkout krdiya uske baad same day me vaapis checkin nahi kar payega , uske liye mysql workbench me last query hai meri usme last checkin, checkout wali row ko delete karde toh firse check in kar payega
+
+
+If still not working:
+agar run nahi ho raha fir bhi toh bas do issues ho sakte hai ki files sahi se place nahi hai ya toh driver tumhare device me installed nahi hai uske liye
+https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.5.0/
+ye link pe jaake jo 
+mysql-connector-j-9.5.0 .jar    pe click karke download kardena fir usko apne EmployeeAttendance folder me lib naam ke folder me move kardena toh hojayega run

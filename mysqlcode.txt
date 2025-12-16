@@ -1,0 +1,137 @@
+-- Create database
+CREATE DATABASE IF NOT EXISTS attendance_db;
+USE attendance_db;
+
+-- Create employees table
+CREATE TABLE IF NOT EXISTS employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    department VARCHAR(50) DEFAULT 'General',
+    role VARCHAR(50) DEFAULT 'Employee',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create attendance table
+CREATE TABLE IF NOT EXISTS attendance (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employee_id INT NOT NULL,
+    date DATE NOT NULL,
+    check_in_time TIME NOT NULL,
+    check_out_time TIME DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_attendance (employee_id, date)
+);
+
+-- Insert sample employees
+INSERT INTO employees (name, email, password, department, role) VALUES
+('John Doe', 'john@company.com', 'password123', 'IT', 'Software Developer'),
+('Jane Smith', 'jane@company.com', 'password123', 'HR', 'HR Manager'),
+('Mike Johnson', 'mike@company.com', 'password123', 'Sales', 'Sales Executive'),
+('Sarah Williams', 'sarah@company.com', 'password123', 'Finance', 'Accountant'),
+('David Brown', 'david@company.com', 'password123', 'Marketing', 'Marketing Specialist');
+
+-- Insert sample attendance records for John Doe
+INSERT INTO attendance (employee_id, date, check_in_time, check_out_time) VALUES
+(1, DATE_SUB(CURDATE(), INTERVAL 5 DAY), '09:00:00', '17:30:00'),
+(1, DATE_SUB(CURDATE(), INTERVAL 4 DAY), '09:15:00', '17:45:00'),
+(1, DATE_SUB(CURDATE(), INTERVAL 3 DAY), '08:45:00', '17:15:00'),
+(1, DATE_SUB(CURDATE(), INTERVAL 2 DAY), '09:05:00', '18:00:00'),
+(1, DATE_SUB(CURDATE(), INTERVAL 1 DAY), '09:10:00', '17:20:00');
+
+-- Insert sample attendance records for Jane Smith
+INSERT INTO attendance (employee_id, date, check_in_time, check_out_time) VALUES
+(2, DATE_SUB(CURDATE(), INTERVAL 5 DAY), '08:30:00', '17:00:00'),
+(2, DATE_SUB(CURDATE(), INTERVAL 4 DAY), '08:45:00', '17:15:00'),
+(2, DATE_SUB(CURDATE(), INTERVAL 3 DAY), '08:50:00', '17:30:00');
+
+-- Verify setup
+SELECT 'Database setup completed successfully!' AS Status;
+SELECT COUNT(*) AS Total_Employees FROM employees;
+SELECT COUNT(*) AS Total_Attendance_Records FROM attendance;
+
+-- 1. Check if database exists
+SHOW DATABASES;
+
+-- 2. Use the database
+USE attendance_db;
+
+-- 3. Check tables
+SHOW TABLES;
+
+-- 4. View employees
+SELECT * FROM employees;
+
+-- 5. View attendance records
+SELECT * FROM attendance;
+
+USE attendance_db;
+
+-- Drop tables in correct order (attendance first because of foreign key)
+DROP TABLE IF EXISTS attendance;
+DROP TABLE IF EXISTS employees;
+
+USE attendance_db;
+
+-- Create employees table with ALL required columns
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    department VARCHAR(50) DEFAULT 'General',
+    role VARCHAR(50) DEFAULT 'Employee',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create attendance table with ALL required columns
+CREATE TABLE attendance (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employee_id INT NOT NULL,
+    date DATE NOT NULL,
+    check_in_time TIME NOT NULL,
+    check_out_time TIME DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_attendance (employee_id, date)
+);
+
+-- Insert sample employees
+INSERT INTO employees (name, email, password, department, role) VALUES
+('John Doe', 'john@company.com', 'password123', 'IT', 'Software Developer'),
+('Jane Smith', 'jane@company.com', 'password123', 'HR', 'HR Manager'),
+('Mike Johnson', 'mike@company.com', 'password123', 'Sales', 'Sales Executive'),
+('Sarah Williams', 'sarah@company.com', 'password123', 'Finance', 'Accountant'),
+('David Brown', 'david@company.com', 'password123', 'Marketing', 'Marketing Specialist');
+
+-- Insert sample attendance records
+INSERT INTO attendance (employee_id, date, check_in_time, check_out_time) VALUES
+(1, DATE_SUB(CURDATE(), INTERVAL 5 DAY), '09:00:00', '17:30:00'),
+(1, DATE_SUB(CURDATE(), INTERVAL 4 DAY), '09:15:00', '17:45:00'),
+(1, DATE_SUB(CURDATE(), INTERVAL 3 DAY), '08:45:00', '17:15:00'),
+(1, DATE_SUB(CURDATE(), INTERVAL 2 DAY), '09:05:00', '18:00:00'),
+(1, DATE_SUB(CURDATE(), INTERVAL 1 DAY), '09:10:00', '17:20:00'),
+(2, DATE_SUB(CURDATE(), INTERVAL 5 DAY), '08:30:00', '17:00:00'),
+(2, DATE_SUB(CURDATE(), INTERVAL 4 DAY), '08:45:00', '17:15:00'),
+(2, DATE_SUB(CURDATE(), INTERVAL 3 DAY), '08:50:00', '17:30:00');
+
+-- Check employees table structure
+DESCRIBE employees;
+
+-- Check attendance table structure
+DESCRIBE attendance;
+
+-- View all employees
+SELECT * FROM employees;
+
+-- View all attendance
+SELECT * FROM attendance;
+USE attendance_db;
+
+-- Delete today's attendance for testing
+DELETE FROM attendance WHERE employee_id = 1 AND date = CURDATE();
+
+-- Verify it's deleted
+SELECT * FROM attendance WHERE employee_id = 1 AND date = CURDATE();
